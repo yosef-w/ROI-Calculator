@@ -79,8 +79,23 @@ class Home:
         print(f"Your Cash on Cash ROI is: {ROI}%")
 
 
-    def edit_entry(self, dictionary, key, value):
-        
+    def edit_entry(self):
+        dictionary = input("What section would you like to edit?\n1. Income Entries\n2. Expense Entries\n3. ROI Entries")
+        if dictionary.title() == "1" or dictionary.title() == "Income Entries":
+            key = input("What entry would you like to edit?\n1. Monthly Rental\n2. Monthly Laundry\n3. Monthly Storage\n4. Monthly Miscellaneous")
+            new_value = int(input("What would you like to update this entry to? "))
+            self.income[key] = new_value
+        elif dictionary.title() == "2" or dictionary.title() == "Expense Entries":
+            key = input("What entry would you like to edit? \n1. Tax\n2. Insurance\n3. Utilities\n4. HOA\n5. Lawn and Snow\n6. Vacancy\n7. Repairs\n8. Cap Ex\n9. Property Management\n10. Mortgage")
+            new_value = int(input("What would you like to update this entry to? "))
+            self.expenses[key] = new_value
+        elif dictionary.title() == "3" or dictionary.title() == "ROI Entries":
+            key = input("What entry would you like to edit? \n1. Down Payment\n2. Closing Costs\n3. Renovations\n4. Miscellaneous")
+            new_value = int(input("What would you like to update this entry to? "))
+            self.ROI[key] = new_value
+        else: 
+            print("That is an invalid option. Please enter \n1. Income Entries\n2. Expense Entries\n3. ROI Entries")
+
 
 
 def run():
