@@ -11,6 +11,7 @@ class Home:
         self.expenses_total = 0
         self.cash_flow_total = 0
         self.total_investment = 0
+        self.ROI_total = 0
 
     def income_calc(self):
         while True:
@@ -26,13 +27,13 @@ class Home:
 
                 income_total = sum(self.income.values())
                 self.income_total = income_total
-                print(f"Your monthly income is: {income_total}")
+                print(f"Your monthly income is: ${float(income_total):.2f}")
                 break
             except ValueError:
                 print("Invalid input. Please enter a number.")
 
     def expenses_calc(self):
-        print("Now let's calculate your monthly expenses.")
+        print("\nNow let's calculate your monthly expenses.\n")
         while True:
             try:
                 tax_expense = int(input("What is your monthly tax expense? $"))
@@ -58,7 +59,7 @@ class Home:
 
                 expense_total = sum(self.expenses.values())
                 self.expenses_total = expense_total
-                print(f"Your monthly expenses are: ${expense_total}")
+                print(f"Your monthly expenses are: ${expense_total:.2f}\n")
                 break
             except ValueError:
                 print("Invalid input. Please enter a number.")
@@ -69,16 +70,16 @@ class Home:
         self.cash_flow_total = cash_flow
         annual_cash_flow = self.cash_flow_total * 12
         self.annual_cash_flow = annual_cash_flow
-        present_cashflow = input("Thanks for the information so far. I've gone ahead and calculated your monthly and annual cash flow. Would you like to see it? ")
+        present_cashflow = input("Thanks for the information so far.\nI've gone ahead and calculated your monthly and annual cash flow.\nWould you like to see it? ")
         if present_cashflow.title() == "Yes":
-            print(f"Your monthly cash flow is: ${cash_flow}. Annually that comes out to be: ${annual_cash_flow}")
+            print(f"\nYour monthly cash flow is: ${cash_flow:.2f}. Annually that comes out to be: ${annual_cash_flow:.2f}.")
         elif present_cashflow.title() == "No":
-            print("Sure, I'll keep that number stored. For now, let's continue.")
+            print("\nSure, I'll keep that number stored. For now, let's continue.")
 
     def ROI_calc(self):
         while True:
             try:
-                print("Now let's calculate your cash on cash ROI.")
+                print("\nNow let's calculate your cash on cash ROI.\n")
                 down_payment = int(input("What was your down payment? $"))
                 self.ROI['Down Payment'] = down_payment
                 closing_costs = int(input("How much did you spend on your closing costs? $"))
@@ -92,47 +93,66 @@ class Home:
                 self.total_investment = total_investment
                 
                 ROI = self.annual_cash_flow / total_investment * 100
-                print(f"Your Cash on Cash ROI is: {ROI:.2f}%")
+                self.ROI_total = ROI
+                print(f"\nYour Cash on Cash ROI is: {ROI:.2f}%")
                 break
             except ValueError:
                 print("Invalid input. Please enter a number.")
 
 
     def edit_entry(self):
-        dictionary = input("What section would you like to edit?\n1. Income Entries\n2. Expense Entries\n3. ROI Entries\n")
-        if dictionary.title() == "1" or dictionary.title() == "Income Entries":
+        dictionary = input("\nWhat section would you like to edit?\n1. Income Entries\n2. Expense Entries\n3. ROI Entries\n")
+        if dictionary == "1" or dictionary.title() == "Income Entries":
             income_table = PrettyTable()
             income_table.field_names = ["Income Entry", "Amount"]
             for key, value in self.income.items():
-                income_table.add_row([key, f'${value:.2}'])
+                income_table.add_row([key, f'${float(value):.2f}'])
             print(income_table)
-            key = input("What entry would you like to edit?\n1. Monthly Rental\n2. Monthly Laundry\n3. Monthly Storage\n4. Monthly Miscellaneous\n")
-            new_value = int(input("What would you like to update this entry to? $"))
-            self.income[key] = new_value
-            print(f"Your entry has been updated.")
-        elif dictionary.title() == "2" or dictionary.title() == "Expense Entries":
+            income_table = PrettyTable()
+            income_table.field_names = ["Income Entry", "Amount"]
+            for key, value in self.income.items():
+                income_table.add_row([key, f'${float(value):.2f}'])
+            key = input("\nWhat entry would you like to edit?\n1. Rental Income\n2. Laundry Income\n3. Storage Income\n4. Miscellaneous Property Income\n")
+            new_income_value = float(input("\nWhat would you like to update this entry to? $"))
+            if key in self.income.keys():
+                self.income[key] = new_income_value
+            print(f"\nYour entry has been updated!\n")
+
+        elif dictionary == "2" or dictionary.title() == "Expense Entries":
             expenses_table = PrettyTable()
             expenses_table.field_names = ["Expense Entry", "Amount"]
             for key, value in self.expenses.items():
-                expenses_table.add_row([key, f'${value:.2}'])
+                expenses_table.add_row([key, f'${float(value):.2f}'])
             print(expenses_table)
-            key = input("What entry would you like to edit? \n1. Tax\n2. Insurance\n3. Utilities\n4. HOA\n5. Lawn and Snow\n6. Vacancy\n7. Repairs\n8. Cap Ex\n9. Property Management\n10. Mortgage\n")
-            new_value = int(input("What would you like to update this entry to? $"))
-            self.expenses[key] = new_value
-            print(f"Your entry has been updated.")
-        elif dictionary.title() == "3" or dictionary.title() == "ROI Entries":
+            key = input("\nWhat entry would you like to edit? \n1. Tax Expense\n2. Insurance Expense\n3. Utilities Expense\n4. HOA Expense\n5. Lawn and Snow Expense\n6. Vacancy Expense\n7. Repairs Expense\n8. Cap Ex Expense\n9. Property Management Expense\n10. Mortgage Expense\n")
+            if key in self.expenses.keys():
+                self.expenses[key] = new_expense_value
+            new_expense_value = float(input("\nWhat would you like to update this entry to? $"))
+            self.expenses[key] = new_expense_value
+            print(f"\nYour entry has been updated!\n")
+
+        elif dictionary == "3" or dictionary.title() == "ROI Entries":
             ROI_table = PrettyTable()
             ROI_table.field_names = ["Investment Cost", "Amount"]
             for key, value in self.ROI.items():
-                ROI_table.add_row([key, f'${value:.2}'])
+                ROI_table.add_row([key, f'${float(value):.2}'])
             print(ROI_table)
-            key = input("What entry would you like to edit? \n1. Down Payment\n2. Closing Costs\n3. Renovations\n4. Miscellaneous\n")
-            new_value = int(input("What would you like to update this entry to? $"))
-            self.ROI[key] = new_value
-            print(f"Your entry has been updated.")
+            key = input("\nWhat entry would you like to edit? \n1. Down Payment\n2. Closing Costs\n3. Renovations\n4. Miscellaneous\n")
+            new_ROI_value = float(input("What would you like to update this entry to? $"))
+            if key in self.ROI.keys():
+                self.ROI[key] = new_ROI_value
+            print(f"\nYour entry has been updated!\n")
+
         else: 
             print("That is an invalid option. Please enter \n1. Income Entries\n2. Expense Entries\n3. ROI Entries\n")
 
+    def view_info(self):
+        print(f"\nYour monthly income is: ${sum(self.income.values())}")
+        print(f"Your monthly expense is: ${sum(self.expenses.values())}")
+        print(f"Your monthly cash flow is: ${(sum(self.income.values()) - sum(self.expenses.values())):.2f}")
+        print(f"Your annual cash flow is: ${(sum(self.income.values())-sum(self.expenses.values()))*12:.2f}")
+        print(f"Your total investment is: ${sum(self.ROI.values()):.2f}")
+        print(f"Your Cash on Cash ROI is: {(sum(self.income.values()) - sum(self.expenses.values())) * 12 / sum(self.ROI.values()) *100 :.2f}%")
 
 
 def run():
@@ -145,21 +165,22 @@ def run():
             my_home.expenses_calc()
             my_home.cash_flow_calc()
             my_home.ROI_calc()
-            print("Thanks for using the ROI calculator!")
+            print("Thanks for using the ROI calculator!\n")
             while True:
                 new_options = input("Would you like to:\n1. 'Edit' An Entry\n2. 'View' My Infomation\n3. 'Quit'\n")
                 if new_options.title() == "1" or new_options.title() == "Edit" or new_options.title() == "Edit Entry":
                     my_home.edit_entry()
                 elif new_options.title() == "2" or new_options.title() == "View" or new_options.title() == "View Info":
-                    pass
+                    my_home.view_info()
                 elif new_options.title() == "3" or new_options.title() == "Quit":
-                    print("Thanks for using the ROI calculator. Have a great day!")
+                    print("\nThanks for using the ROI calculator. Have a great day!")
                     active = False
+                    break
                 else:
                     print("That is an invalid option. Please enter:\n1. 'Edit' An Entry\n2. 'View' My Infomation\n3. Quit\n ")
 
         elif opening.title() == "No":
-            print("Sure, now problem. Please come back when you are ready!")
+            print("\nSure, now problem. Please come back when you are ready!\n")
             active = False
         else:
             print("That is an invalid option. Please enter 'Yes' or 'No'.")
